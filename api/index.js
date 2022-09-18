@@ -5,9 +5,9 @@ import mongoose from 'mongoose'
 
 // importing routes.
 import authRouter from './routes/auth.js'
-import roomsRouter from './routes/rooms'
-import hotelsRouter from './routes/rooms'
-import usersRouter from './routes/rooms'
+import roomsRouter from './routes/rooms.js'
+import hotelsRouter from './routes/hotels.js'
+import usersRouter from './routes/users.js'
 dotenv.config()
 
 // connecting to the DB.
@@ -26,10 +26,23 @@ mongoose.connection.on("disconnected", () => {
 })
 
 // middlewares.
+app.use(express.json()); // for sending json to the server.
 app.use("/api/auth", authRouter);
 app.use("/api/hotels", hotelsRouter);
 app.use("/api/rooms", roomsRouter);
 app.use("/api/users", usersRouter);
+
+app.use((err, req, res, next) => {
+    const errorStatus = err.status || 500;
+    const errorMessage = err.message || "Something went wrong";
+
+    return res.status(errorStatus).json({
+        success: false,
+        status: errorStatus,
+        msg: errorMessage,
+        stack: err.stack,
+    });
+})
 
 // app.get('/users', (req, res) => {
 //     res.send("Hello this is me checking db")
