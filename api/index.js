@@ -19,12 +19,8 @@ mongoose.connection.on("disconnected", () => {
     console.log("mongoDB disconnected");
 })
 
-mongoose.connection.on("connected", () => {
-    console.log("mongoDB Connected");
-})
-
-app.get('/', (req, res) => {
-    res.send("Hello")
+app.get('/users', (req, res) => {
+    res.send("Hello this is me checking db")
 })
 
 app.listen(8800, () => {
