@@ -3,6 +3,9 @@ const app = express();
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 
+// importing middlewares.
+import cookieParser from 'cookie-parser';
+
 // importing routes.
 import authRouter from './routes/auth.js'
 import roomsRouter from './routes/rooms.js'
@@ -26,6 +29,7 @@ mongoose.connection.on("disconnected", () => {
 })
 
 // middlewares.
+app.use(cookieParser());
 app.use(express.json()); // for sending json to the server.
 app.use("/api/auth", authRouter);
 app.use("/api/hotels", hotelsRouter);
