@@ -15,7 +15,7 @@ export const verifyToken = (req, res, next) => {
 };
 
 export const verifyUser = (req, res, next) => {
-    verifyToken(req, res, () => { // the token is verified first, then checked if the correct user is managing correct account.
+    verifyToken(req, res, next, () => { // the token is verified first, then checked if the correct user is managing correct account.
         // we did not pass next here because we don't want to use verifyUsers next.
         if (req.info.id === req.params.id || req.info.isAdmin) {
             next()
@@ -25,8 +25,9 @@ export const verifyUser = (req, res, next) => {
     })
 }
 
+// confused about it.
 export const verifyAdmin = (req, res, next) => {
-    verifyToken(req, res, () => {
+    verifyToken(req, res, next, () => {
         if (!req.info.isAdmin) return next(createError(401, "Not an admin"));
         next();
     })
